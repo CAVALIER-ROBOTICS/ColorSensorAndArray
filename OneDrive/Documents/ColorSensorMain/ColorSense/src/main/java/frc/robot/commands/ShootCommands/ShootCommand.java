@@ -7,6 +7,7 @@ package frc.robot.commands.ShootCommands;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ColorSensor;
 import frc.robot.Limelight;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -33,14 +34,9 @@ public class ShootCommand extends CommandBase {
     shootSub.setShooterVelocity(Limelight.getRPM());
     // shootSub.setShooter(.5);
     // shootSub.setShooterVelocity();
-    // if(Math.abs(Limelight.getRPM()-shootSub.getVolicty())<50) {
-    //   RobotContainer.operator.setRumble(RumbleType.kLeftRumble, 1.0);
-    //   RobotContainer.operator.setRumble(RumbleType.kRightRumble, 1.0);
-    // }
-    // else{
-    //   RobotContainer.operator.setRumble(RumbleType.kLeftRumble, 0.0);
-    //   RobotContainer.operator.setRumble(RumbleType.kRightRumble, 0.0);
-    // }
+    if(shootSub.getVoltage()>65) {
+      ColorSensor.removeBall(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
