@@ -106,6 +106,10 @@ public class ShooterSubsystem extends SubsystemBase {
     left.set(ControlMode.PercentOutput, volt);
     right.set(ControlMode.PercentOutput, volt);
   }
+
+  public double getVoltage() {
+    return (left.getOutputCurrent()+right.getOutputCurrent())/2;
+  }
   
   @Override
   public void periodic() {
@@ -113,6 +117,6 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("fly Wheel right", (right.getSelectedSensorVelocity() * 600) / 2048 );
     SmartDashboard.putNumber("fly Wheel left", (left.getSelectedSensorVelocity() * 600) / 2048 );
 
-    SmartDashboard.putNumber("flywheel voltage", right.getOutputCurrent());
+    SmartDashboard.putNumber("flywheel voltage", getVoltage());
   }
 }

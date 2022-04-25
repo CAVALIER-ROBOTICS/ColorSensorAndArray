@@ -30,11 +30,16 @@ public class ColorSensor {
     
     static colorStates lastColor = colorStates.UNDEFINED;
 
+    public static boolean lastIntaking = false;
+    public static boolean lastOuttaking = false;
+
+
 
     public static ArrayList<colorStates> intakeState = new ArrayList<>();
     public static void updateLastColor() {
-        SmartDashboard.putBoolean("intaking", IntakeSubsystem.isIntaking());
-        SmartDashboard.putBoolean("outtaking", IntakeSubsystem.isOuttaking());
+        SmartDashboard.putNumber("Size", intakeState.size());
+        SmartDashboard.putBoolean("intaking", lastIntaking);
+        SmartDashboard.putBoolean("outtaking", lastOuttaking);
         Color detectedColor = colorSensorV3.getColor();
         colorStates cState;
         cMatch.addColorMatch(kBlueTarget);
@@ -68,18 +73,27 @@ public class ColorSensor {
         else{
             SmartDashboard.putString("color", "undefined");
         }
+
+        if(IntakeSubsystem.isIntaking()) {
+            lastIntaking = true;
+            lastOuttaking = false;
+        }
+        else if(IntakeSubsystem.isOuttaking()) {
+            lastOuttaking = true;
+            lastIntaking = false;
+        }
     
     }
 
     public static void updateBallState() {
       
-        if(IntakeSubsystem.isIntaking()) {
+        if(lastIntaking) {
             intakeState.add(lastColor);
         }
-        else if(IntakeSubsystem.isOuttaking()) {
+        else if(lastOuttaking && intakeState.size()>0) {
             if(intakeState.size()>1) {
                removeBall(1);
-        }
+            }
             else if(intakeState.size()<1) {
                 removeBall(0);
             }
@@ -106,11 +120,11 @@ public class ColorSensor {
     }
 
     public static colorStates getAllianceColor() {
-        // if (DriverStation.getAlliance() == Alliance.Red) {
-        //     return colorStates.RED;
-        // }
-        // else{
+        if (DriverStation.getAlliance() == Alliance.Red) {
+            return colorStates.RED;
+        }
+        else{
             return colorStates.BLUE;
-       // }
+       }
     }
 }
