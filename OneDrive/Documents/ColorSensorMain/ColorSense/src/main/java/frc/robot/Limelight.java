@@ -121,12 +121,12 @@ public class Limelight {
             willBeShot = ColorSensor.getAllianceColor();
         }
         
-
         if(currentMode == ledModes.ON && willBeShot == ColorSensor.getAllianceColor())  {
             return getAngle();
         }
         else {
-            return  14;
+         return 14;
         }
     }
 }
+

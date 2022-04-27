@@ -34,7 +34,7 @@ public class ColorSensor {
     public static boolean lastOuttaking = false;
 
 
-
+  
     public static ArrayList<colorStates> intakeState = new ArrayList<>();
     public static void updateLastColor() {
         SmartDashboard.putNumber("Size", intakeState.size());
@@ -44,6 +44,7 @@ public class ColorSensor {
         colorStates cState;
         cMatch.addColorMatch(kBlueTarget);
         cMatch.addColorMatch(kRedTarget);
+        cMatch.setConfidenceThreshold(.1);
         ColorMatchResult matchResult = cMatch.matchClosestColor(detectedColor);
         //int proxy = colorSensorV3.getProximity();
     
@@ -108,11 +109,15 @@ public class ColorSensor {
     }
 
     public static void addBall(colorStates colorState) {
-        intakeState.add(colorState);
+        if(intakeState.size()<2) {
+            intakeState.add(colorState);
+        }
     }
 
     public static void removeBall(int index) {
-        intakeState.remove(index);
+        if(intakeState.size()>0) {
+            intakeState.remove(index);
+        }
     }
 
     public static ArrayList<colorStates> getBallState() {

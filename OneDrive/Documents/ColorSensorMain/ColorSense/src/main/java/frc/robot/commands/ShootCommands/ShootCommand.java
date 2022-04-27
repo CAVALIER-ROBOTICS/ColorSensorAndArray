@@ -15,7 +15,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootCommand extends CommandBase {
   /** Creates a new ShootCommand. */
   ShooterSubsystem shootSub;
-  public int ballsShot = 0;
   public boolean hasRemoved = false; //this is because whenever you remove an entry,
   // everything else shifts, so you probably have to prevent one voltage spike from clearing the table
   public ShootCommand(ShooterSubsystem s) {
@@ -40,8 +39,6 @@ public class ShootCommand extends CommandBase {
     if(shootSub.getVoltage()>50 && ColorSensor.getBallState().size()>0 && !hasRemoved) {
         ColorSensor.removeBall(0); 
         hasRemoved = true;
-        ballsShot = ballsShot +1;
-        SmartDashboard.putNumber("balls shot", ballsShot);
     }
     else if(shootSub.getVoltage()<50) {
       hasRemoved = false;
